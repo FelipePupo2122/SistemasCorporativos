@@ -1,0 +1,14 @@
+-Verificar se o node ta criado:
+Node --version
+-Instalar o Express:
+Npm install -g express-generator
+-Criar o projeto:
+Express --no-view nomedoprojeto
+-Acessar a pasta do projeto:
+Cd nomedoprojeto
+-Instalar o sequelize:
+npm install sequelize-cli
+e
+npm install sequelize
+-Iniciar o sequelize:
+npx install sequelize-cli init
