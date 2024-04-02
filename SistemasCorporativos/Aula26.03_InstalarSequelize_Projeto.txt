@@ -1,3 +1,4 @@
+No Prompt de comando da pasta criada:
 -Verificar se o node ta criado:
 Node --version
 -Instalar o Express:
@@ -12,3 +13,19 @@ e
 npm install sequelize
 -Iniciar o sequelize:
 npx install sequelize-cli init
+
+
+
+No MYSQL:
+
+-Senha do root user:
+Positivo
+
+-Para começar com o banco:
+
+CREATE database Sistemas;
+USE Sistemas;
+Create USER 'devuser'@'localhost' identified by 'dev@123';
+GRANT ALL PRIVILEGES ON *.* to 'devuser'@'localhost'
+	WITH GRANT OPTION;
+FLUSH PRIVILEGES;
