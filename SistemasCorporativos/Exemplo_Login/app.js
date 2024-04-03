@@ -18,3 +18,26 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 module.exports = app;
+
+const db = require('./models');
+const { error } = require('console');
+
+//aqui será aplicado as migrations(integrar com o banco de dados)
+async function ApplyMigrations(){
+    try{
+    migration_config={
+    create: true,
+    alter: true
+};
+
+db.sequelize.sync({
+    alter: migration_config.alter
+});
+console.log('Sincronização com o banco realizada');
+    }
+    catch{error}
+    console.log('Erro sincronizando o banco de dados', error);
+}
+
+//acionar a sincrinzação com o banco
+ApplyMigrations();
