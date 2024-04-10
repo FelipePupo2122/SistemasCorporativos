@@ -41,3 +41,9 @@ console.log('Sincronização com o banco realizada');
 
 //acionar a sincrinzação com o banco
 ApplyMigrations();
+
+var port = '3000';
+app.listen(port,function(){
+    console.log("Server runing on port"  + port);
+    module.exports = app;
+});

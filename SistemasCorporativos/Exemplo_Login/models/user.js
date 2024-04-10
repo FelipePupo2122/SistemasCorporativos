@@ -21,11 +21,11 @@ module.exports = (sequelize) =>{
     senha:{
         type: Sequelize.STRING,
         allowNull:false
-    },
-    dt_nasce:{
-        type: Sequelize.STRING,
-        allowNull:false
     }
+    // dt_nasce:{
+    //     type: Sequelize.STRING,
+    //     allowNull:false
+    // }
     });
     return User;
 };
