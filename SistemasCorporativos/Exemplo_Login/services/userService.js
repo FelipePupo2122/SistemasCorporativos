@@ -1,5 +1,4 @@
 // ./services/userService/.js
-const db = require('../models');
 class userService{
     // construtor da classe recebe a user model
     constructor(userModel){
@@ -26,4 +25,37 @@ class userService{
         throw error;
     }
     }
+    ///localizaTodosUsuario
+    async localizaTodosUsuario(login,senha){
+        try{
+           const AllUsers = await this.User.findAll();
+           return AllUsers? AllUsers: null;
+        }
+        catch(error){
+        throw error;
+        }
+    }
+
+    ///localizaUsuarioPeloLogin
+    // async localizaUsuarioPeloId(id){
+    //     try{
+    //        const LocalizaUser = await this.User.findByPk(id);
+    //        return LocalizaUser? LocalizaUser: null;
+    //     }
+    //     catch(error){
+    //     throw error;
+    //     }
+    // }
+    async findOne(id) {
+        try {
+            const user = await this.User.findByPk(id);
+            return user ? user : null;
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }
+
+
+module.exports = userService;

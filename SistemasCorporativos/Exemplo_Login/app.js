@@ -30,10 +30,10 @@ async function ApplyMigrations(){
     alter: true
 };
 
-db.sequelize.sync({
+await db.sequelize.sync({
     alter: migration_config.alter
 });
-console.log('Sincronização com o banco realizada');
+console.log('Sincronização com o banco realizada')
     }
     catch{error}
     console.log('Erro sincronizando o banco de dados', error);
