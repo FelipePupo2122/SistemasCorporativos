@@ -4,6 +4,7 @@ var router = express.Router();
 
   const db=require('../models');
   const userService = require('../services/userService');//CLASSE
+  const auth = require('../Middleware/auth');
   const bcrypt = require('bcrypt'); //bcrypt
   const User = db.User;
   const UserService = new userService(User);
@@ -30,21 +31,21 @@ router.post('/novoUsuario', async function(req, res, next){
       res.status(500).json({ error: 'Erro ao inserir novo usuário.' });
   }
 });
-// rota localiza todos usuarios
-router.get('/localizaTodosUsuario' , function(req, res, next){
-  UserController.localizaTodosUsuario(req, res);
-});
 // localiza um usuario especifico
 // router.get('/localizaUsuarioPeloId' , function(req, res, next){
 //   UserController.localizaUsuarioPeloId(req, res);
 // });
-router.get('/:id', function(req, res, next) {
-  UserController.findOne(req, res);
-});
+// router.get('/:id', function(req, res, next) {
+//   UserController.findOne(req, res);
+// });
 
 
 router.post('/login', function (req, res, next) {
   UserController.login(req, res); // Chame o método de login do controlador de usuário
+});
+
+router.get('/localizaTodosUsuario' , auth, function(req, res, next){
+  UserController.localizaTodosUsuario(req, res);
 });
 
 module.exports = router;
