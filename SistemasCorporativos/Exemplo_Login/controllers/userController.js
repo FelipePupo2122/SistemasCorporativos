@@ -4,16 +4,14 @@ class userController{
     constructor(userService){
         this.userService = userService;
     }
-    async create(req, res){
-        const {nome, email, senha} = req.body;
-        try{
+    async create(req, res) {
+        const { nome, email, senha } = req.body;
+        try {
             const novoUser = await this.userService.create(nome, email, senha);
             res.status(200).json(novoUser);
+        } catch (error) {
+            res.status(500).json({ error: 'Erro ao inserir novo usuário.' });
         }
-        catch(error){
-            res.status(500).json({error: 'Erro ao inserir novo usuario.'});    
-        }
-
     }
     //LocalizaTodosUsuario
     async localizaTodosUsuario(req,res){
@@ -26,6 +24,16 @@ class userController{
             res.status(400).json({error : "Login Invalido. "});
         }
 
+    }
+
+    async login(req, res) {
+        const { id, senha } = req.body;
+        try {
+            const token = await this.userService.login(id, senha);
+            res.status(200).json({ token });
+        } catch (error) {
+            res.status(401).json({ error: error.message });
+        }
     }
 
     // async localizaUsuarioPeloId(req,res){

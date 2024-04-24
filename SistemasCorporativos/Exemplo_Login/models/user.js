@@ -19,8 +19,8 @@ module.exports = (sequelize) =>{
         unique: true
     },
     senha:{
-        type: Sequelize.STRING,
-        allowNull:false
+        type: Sequelize.CHAR(60), // Aqui definimos o tipo de dados CHAR com tamanho 60 para a senha
+        allowNull: false
     }
     // dt_nasce:{
     //     type: Sequelize.STRING,

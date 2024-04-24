@@ -4,10 +4,13 @@ var router = express.Router();
 
   const db=require('../models');
   const userService = require('../services/userService');//CLASSE
-  const UserService = new userService(db.User);//Contruçõa objeto
+  const bcrypt = require('bcrypt'); //bcrypt
+  const User = db.User;
+  const UserService = new userService(User);
+  // const UserService = new userService(db.User);//Contruçõa objeto (antigo)
 
   const userController = require('../controllers/userController'); // classe
-  const UserController = new userController(UserService);//Construção do objeto
+  const UserController = new userController(new userService(User));//Construção do objeto
 
 
 /* GET users listing. */
@@ -16,8 +19,16 @@ router.get('/', function(req, res, next) {
 });
 
 //rota para criar um novo usuario
-router.post('/novoUsuario', function(req, res, next){
-  UserController.create(req, res);
+router.post('/novoUsuario', async function(req, res, next){
+  const { nome, email, senha } = req.body;
+  try {
+      // Hash da senha usando bcrypt
+      const hashedSenha = await bcrypt.hash(senha, 10); // 10 é o número de rounds de salt
+      const novoUser = await UserService.create(nome, email, hashedSenha);
+      res.status(200).json(novoUser);
+  } catch (error) {
+      res.status(500).json({ error: 'Erro ao inserir novo usuário.' });
+  }
 });
 // rota localiza todos usuarios
 router.get('/localizaTodosUsuario' , function(req, res, next){
@@ -31,5 +42,9 @@ router.get('/:id', function(req, res, next) {
   UserController.findOne(req, res);
 });
 
+
+router.post('/login', function (req, res, next) {
+  UserController.login(req, res); // Chame o método de login do controlador de usuário
+});
 
 module.exports = router;
