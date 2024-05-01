@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { generateToken } = require('../Middleware/auth');
 // ./services/userService/.js
 class userService{
     // construtor da classe recebe a user model
@@ -79,7 +80,7 @@ class userService{
             }
 
             // Se as credenciais estiverem corretas, crie um token JWT
-            const token = jwt.sign({ id: user.id, nome: user.nome }, 'secreto', { expiresIn: '1h' });
+            const token = generateToken(user.id);
 
             return token;
         } catch (error) {

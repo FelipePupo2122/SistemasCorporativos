@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 
+  const { authenticateToken } = require('../Middleware/auth');
   const db=require('../models');
   const userService = require('../services/userService');//CLASSE
   const auth = require('../Middleware/auth');
@@ -44,7 +45,7 @@ router.post('/login', function (req, res, next) {
   UserController.login(req, res); // Chame o método de login do controlador de usuário
 });
 
-router.get('/localizaTodosUsuario' , auth, function(req, res, next){
+router.get('/localizaTodosUsuario' , authenticateToken, function(req, res, next){
   UserController.localizaTodosUsuario(req, res);
 });
 

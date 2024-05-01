@@ -1,3 +1,5 @@
+// app.js
+
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -5,6 +7,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var produtosRouter = require('./routes/produtos');
+var depositosRouter = require('./routes/depositos'); // Importe a rota de produtos
 
 
 var app = express();
@@ -17,10 +21,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/login', usersRouter);
+app.use('/produtos', produtosRouter);
+app.use('/depositos', depositosRouter); // Configure a rota para produtos
 
 module.exports = app;
-
 
 const bcrypt = require('bcrypt'); //bcrypt
 const db = require('./models');

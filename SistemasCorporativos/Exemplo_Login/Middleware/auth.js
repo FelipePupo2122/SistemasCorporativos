@@ -1,23 +1,24 @@
-// middlewares/auth.js
 const jwt = require('jsonwebtoken');
+const SECRET_KEY = 'seu_secret_key_aqui';  // Lembre-se de armazenar isso em variáveis de ambiente
 
-// Função de middleware para autenticação JWT
-function auth(req, res, next) {
-  // Verifica se o token está presente nos cabeçalhos da requisição
-  const token = req.headers['authorization'];
-  if (!token) {
-    return res.status(401).json({ error: 'Token não fornecido' });
-  }
+// Função para gerar o token JWT
+const generateToken = (userId) => {
+    return jwt.sign({ id: userId }, SECRET_KEY, { expiresIn: '24h' });
+};
 
-  // Verifica se o token é válido
-  jwt.verify(token, 'segredo', (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ error: 'Token inválido' });
-    }
-    // Se o token é válido, adiciona o ID do usuário decodificado ao objeto req para uso posterior nas rotas protegidas
-    req.userId = decoded.id;
-    next();
-  });
-}
+// Middleware para autenticar o token
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
 
-module.exports = auth;
+    if (token == null) return res.sendStatus(401); // Se não há token, retorna não autorizado
+
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+        if (err) return res.sendStatus(403); // Retorna acesso proibido se houver erro
+
+        req.user = user;
+        next(); // Prossegue para a próxima função no pipeline do middleware
+    });
+};
+
+module.exports = { generateToken, authenticateToken };
