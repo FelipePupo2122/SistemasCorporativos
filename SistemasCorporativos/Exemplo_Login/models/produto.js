@@ -1,4 +1,3 @@
-// models/produto.js
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
@@ -14,15 +13,12 @@ module.exports = (sequelize) => {
         },
         descricao: {
             type: Sequelize.STRING
-        },
-        quantidade: {
-            type: Sequelize.INTEGER
         }
     });
 
     Produto.associate = (models) => {
-        Produto.belongsTo(models.Deposito, {
-            foreignKey: 'depositoId',
+        Produto.hasMany(models.Movimento, {
+            foreignKey: 'produtoId',
             onDelete: 'CASCADE'
         });
     };

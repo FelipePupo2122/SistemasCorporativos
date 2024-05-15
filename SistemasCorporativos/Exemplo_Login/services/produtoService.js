@@ -1,11 +1,12 @@
-class produtoService {
+// services/produtoService.js
+class ProdutoService {
     constructor(produtoModel) {
         this.Produto = produtoModel;
     }
 
-    async criarProduto(nome, descricao, quantidade, depositoId) {
+    async criarProduto(nome, descricao, depositoId) {
         try {
-            const novoProduto = await this.Produto.create({ nome, descricao, quantidade, depositoId });
+            const novoProduto = await this.Produto.create({ nome, descricao, depositoId });
             return novoProduto;
         } catch (error) {
             throw error;
@@ -22,4 +23,4 @@ class produtoService {
     }
 }
 
-module.exports = produtoService;
+module.exports = ProdutoService;

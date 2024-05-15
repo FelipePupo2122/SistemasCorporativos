@@ -1,17 +1,17 @@
-// app.js
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const produtosRouter = require('./routes/produtos');
+const depositosRouter = require('./routes/depositos');
+const movimentosRouter = require('./routes/movimentos');
+const departamentosRouter = require('./routes/departamentos');
+const fornecedoresRouter = require('./routes/fornecedores');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var produtosRouter = require('./routes/produtos');
-var depositosRouter = require('./routes/depositos'); // Importe a rota de produtos
-
-
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -22,53 +22,54 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/produtos', produtosRouter);
-app.use('/depositos', depositosRouter); // Configure a rota para produtos
+app.use('/depositos', depositosRouter);
+app.use('/movimentos', movimentosRouter);
+app.use('/departamentos', departamentosRouter);
+app.use('/fornecedores', fornecedoresRouter);
 
 module.exports = app;
 
-const bcrypt = require('bcrypt'); //bcrypt
+const bcrypt = require('bcrypt');
 const db = require('./models');
-const { error } = require('console');
 
 // Função para criptografar a senha antes de criar um novo usuário
 async function hashPassword(req, res, next) {
     if (req.body.senha) {
         try {
-            const hashedSenha = await bcrypt.hash(req.body.senha, 10); // 10 é o número de rounds de salt
+            const hashedSenha = await bcrypt.hash(req.body.senha, 10);
             req.body.senha = hashedSenha;
-            next(); // Chame next() após a senha ser criptografada
+            next();
         } catch (error) {
             return res.status(500).json({ error: 'Erro ao criptografar a senha.' });
         }
     } else {
-        next(); // Se não houver senha na requisição, passe para o próximo middleware
+        next();
     }
 }
 
-app.post('/users/novoUsuario', hashPassword);
-
-//aqui será aplicado as migrations(integrar com o banco de dados)
-async function ApplyMigrations(){
-    try{
-    migration_config={
-    create: true,
-    alter: true
-};
-
-await db.sequelize.sync({
-    alter: migration_config.alter
+app.post('/users/novoUsuario', hashPassword, async (req, res) => {
+    const { nome, email, senha } = req.body;
+    try {
+        const novoUser = await UserService.create(nome, email, senha);
+        res.status(200).json(novoUser);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao inserir novo usuário.' });
+    }
 });
-console.log('Sincronização com o banco realizada')
+
+// Aplicar migrações e sincronizar o banco de dados
+async function ApplyMigrations() {
+    try {
+        await db.sequelize.sync({ alter: true });
+        console.log('Sincronização com o banco realizada');
+    } catch (error) {
+        console.log('Erro sincronizando o banco de dados', error);
     }
-    catch{error}
-    console.log('Erro sincronizando o banco de dados', error);
 }
 
-//acionar a sincrinzação com o banco
 ApplyMigrations();
 
-var port = '3000';
-app.listen(port,function(){
-    console.log("Server runing on port"  + port);
-    module.exports = app;
+const port = '3000';
+app.listen(port, () => {
+    console.log("Server running on port " + port);
 });
