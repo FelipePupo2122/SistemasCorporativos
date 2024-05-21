@@ -1,3 +1,5 @@
+// models/fornecedor.js
+
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {

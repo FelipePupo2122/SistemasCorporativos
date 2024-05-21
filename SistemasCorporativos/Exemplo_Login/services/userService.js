@@ -7,7 +7,7 @@ class userService{
     constructor(userModel){
         this.User = userModel;
     }
-    async create(nome, email, senha){
+    async create(nome, email, senha, departamento){
         try{
 
             // Hash da senha usando bcrypt
@@ -17,7 +17,8 @@ class userService{
                 {
                 nome:nome,
                 email:email,
-                senha: senha
+                senha: senha,
+                departamento: departamento
                 });
                 novoUser.senha = "";  
 

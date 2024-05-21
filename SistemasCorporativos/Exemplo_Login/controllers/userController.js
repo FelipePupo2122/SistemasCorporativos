@@ -1,29 +1,18 @@
 // ./controllers/userController.js
 
-class userController{
-    constructor(userService){
+class UserController {
+    constructor(userService) {
         this.userService = userService;
     }
+
     async create(req, res) {
-        const { nome, email, senha } = req.body;
+        const { nome, email, senha, departamento } = req.body;
         try {
-            const novoUser = await this.userService.create(nome, email, senha);
+            const novoUser = await this.userService.create(nome, email, senha, departamento);
             res.status(200).json(novoUser);
         } catch (error) {
             res.status(500).json({ error: 'Erro ao inserir novo usuário.' });
         }
-    }
-    //LocalizaTodosUsuario
-    async localizaTodosUsuario(req,res){
-        const{login, senha} = req.body;
-        try{
-            const allUsers = await this.userService.localizaTodosUsuario(login, senha);
-            res.status(200).json(allUsers);
-        }
-        catch{
-            res.status(400).json({error : "Login Invalido. "});
-        }
-
     }
 
     async login(req, res) {
@@ -36,19 +25,15 @@ class userController{
         }
     }
 
-    // async localizaUsuarioPeloId(req,res){
-    //     const{id} = req.params;
-    //     try {
-    //         const localizaUser = await this.userService.localizaUsuarioPeloId(id);
-    //         if (!localizaUser) {
-    //             return res.status(404).json({ error: "Usuário não encontrado." });
-    //         }
-    //         res.status(200).json(localizaUser);
-    //     } catch (error) {
-    //         res.status(500).json({ error: "Erro ao buscar usuário." });
-    //     }
+    async localizaTodosUsuario(req, res) {
+        try {
+            const allUsers = await this.userService.localizaTodosUsuario();
+            res.status(200).json(allUsers);
+        } catch {
+            res.status(400).json({ error: "Erro ao buscar usuários." });
+        }
+    }
 
-    // }
     async findOne(req, res) {
         const { id } = req.params;
         try {
@@ -61,6 +46,6 @@ class userController{
             res.status(500).json({ error: "Erro ao buscar usuário." });
         }
     }
-
 }
-module.exports = userController;
+
+module.exports = UserController;

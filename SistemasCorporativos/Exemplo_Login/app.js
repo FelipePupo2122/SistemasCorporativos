@@ -10,6 +10,8 @@ const depositosRouter = require('./routes/depositos');
 const movimentosRouter = require('./routes/movimentos');
 const departamentosRouter = require('./routes/departamentos');
 const fornecedoresRouter = require('./routes/fornecedores');
+const requisicoesRouter = require('./routes/requisicoes');
+const comprasRouter = require('./routes/compras'); // Importa a rota de compras
 
 const app = express();
 
@@ -26,6 +28,8 @@ app.use('/depositos', depositosRouter);
 app.use('/movimentos', movimentosRouter);
 app.use('/departamentos', departamentosRouter);
 app.use('/fornecedores', fornecedoresRouter);
+app.use('/requisicoes', requisicoesRouter);
+app.use('/compras', comprasRouter); // Adiciona a rota de compras
 
 module.exports = app;
 
@@ -47,15 +51,7 @@ async function hashPassword(req, res, next) {
     }
 }
 
-app.post('/users/novoUsuario', hashPassword, async (req, res) => {
-    const { nome, email, senha } = req.body;
-    try {
-        const novoUser = await UserService.create(nome, email, senha);
-        res.status(200).json(novoUser);
-    } catch (error) {
-        res.status(500).json({ error: 'Erro ao inserir novo usuário.' });
-    }
-});
+app.post('/users/novoUsuario', hashPassword);
 
 // Aplicar migrações e sincronizar o banco de dados
 async function ApplyMigrations() {

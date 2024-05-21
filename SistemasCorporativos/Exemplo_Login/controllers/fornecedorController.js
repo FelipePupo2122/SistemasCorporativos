@@ -52,10 +52,6 @@ class FornecedorController {
             return res.status(500).json({ error: 'Erro ao excluir fornecedor.' });
         }
     }
-
-    async novoProduto(req, res) {
-        // Implemente a lógica para criar um novo produto de um fornecedor aqui
-    }
 }
 
 module.exports = FornecedorController;
