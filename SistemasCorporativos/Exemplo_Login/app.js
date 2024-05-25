@@ -11,7 +11,9 @@ const movimentosRouter = require('./routes/movimentos');
 const departamentosRouter = require('./routes/departamentos');
 const fornecedoresRouter = require('./routes/fornecedores');
 const requisicoesRouter = require('./routes/requisicoes');
-const comprasRouter = require('./routes/compras'); // Importa a rota de compras
+const comprasRouter = require('./routes/compras');
+const titulosRouter = require('./routes/titulos'); // Importa a rota de titulos
+const movimentoContasPagarRouter = require('./routes/movimentoContasPagar'); // Importa a rota de movimentoContasPagar
 
 const app = express();
 
@@ -29,7 +31,9 @@ app.use('/movimentos', movimentosRouter);
 app.use('/departamentos', departamentosRouter);
 app.use('/fornecedores', fornecedoresRouter);
 app.use('/requisicoes', requisicoesRouter);
-app.use('/compras', comprasRouter); // Adiciona a rota de compras
+app.use('/compras', comprasRouter);
+app.use('/titulos', titulosRouter); // Adiciona a rota de titulos
+app.use('/movimentosContasPagar', movimentoContasPagarRouter); // Adiciona a rota de movimentosContasPagar
 
 module.exports = app;
 

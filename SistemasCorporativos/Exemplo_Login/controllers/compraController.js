@@ -3,16 +3,17 @@
 const CompraService = require('../services/compraService');
 
 class CompraController {
-    constructor() {
-        this.compraService = new CompraService();
+    constructor(compraService) {
+        this.compraService = compraService;
     }
 
     async criarCompra(req, res) {
+        const { fornecedorId, cotacaoId, compradorId, produtoId, quantidade, custoUnitario, numeroParcelas } = req.body;
         try {
-            const novaCompra = await this.compraService.criarCompra(req.body);
-            res.status(201).json(novaCompra);
+            const novaCompra = await this.compraService.criarCompra(fornecedorId, cotacaoId, compradorId, produtoId, quantidade, custoUnitario, numeroParcelas);
+            return res.status(201).json(novaCompra);
         } catch (error) {
-            res.status(500).json({ error: 'Erro ao criar compra.' });
+            return res.status(500).json({ error: 'Erro ao criar nova compra.' });
         }
     }
 

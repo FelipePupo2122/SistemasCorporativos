@@ -2,10 +2,15 @@
 
 const express = require('express');
 const router = express.Router();
+const CompraService = require('../services/compraService');
 const CompraController = require('../controllers/compraController');
+const db = require('../models');
 
-const compraController = new CompraController();
+// Inicializar o serviço e o controlador
+const compraService = new CompraService(db.Compra);
+const compraController = new CompraController(compraService);
 
+// Rota para criar uma nova compra
 router.post('/novaCompra', function(req, res, next) {
     compraController.criarCompra(req, res);
 });

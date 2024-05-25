@@ -1,40 +1,35 @@
 const { DataTypes } = require('sequelize');
 const db = require('../config/db');
 
-const Compra = db.define('Compra', {
+const Titulo = db.define('Titulo', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    fornecedorId: {
+    notaFiscal: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    nParcela: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    cotacaoId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    compradorId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    produtoId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    quantidade: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    custoUnitario: {
+    valorOriginal: {
         type: DataTypes.DECIMAL(10, 2),
+        allowNull: false
+    },
+    dtVcto: {
+        type: DataTypes.DATE,
         allowNull: false
     },
     situacao: {
         type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 'pendente'
+        allowNull: false
+    },
+    noNotaFiscal: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     numeroParcelas: {
         type: DataTypes.INTEGER,
@@ -42,4 +37,4 @@ const Compra = db.define('Compra', {
     }
 });
 
-module.exports = Compra;
+module.exports = Titulo;

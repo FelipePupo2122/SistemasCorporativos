@@ -3,9 +3,21 @@
 const Compra = require('../models/compra');
 
 class CompraService {
-    async criarCompra(dadosCompra) {
+    constructor(compraModel) {
+        this.Compra = compraModel;
+    }
+
+    async criarCompra(fornecedorId, cotacaoId, compradorId, produtoId, quantidade, custoUnitario, numeroParcelas) {
         try {
-            const novaCompra = await Compra.create(dadosCompra);
+            const novaCompra = await this.Compra.create({
+                fornecedorId,
+                cotacaoId,
+                compradorId,
+                produtoId,
+                quantidade,
+                custoUnitario,
+                numeroParcelas
+            });
             return novaCompra;
         } catch (error) {
             throw error;
