@@ -1,41 +1,49 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/config.json');
+const Sequelize = require('sequelize');
 
-const MovimentoContasPagar = sequelize.define('MovimentoContasPagar', {
+module.exports = (sequelize) => {
+  const MovimentoContasPagar = sequelize.define('MovimentoContasPagar', {
     id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
     },
     tituloId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'Titulos',
-            key: 'id'
-        }
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Titulos',
+        key: 'id'
+      }
     },
     dataMovimento: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
+      type: Sequelize.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.NOW
     },
     tipoMovimento: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: Sequelize.STRING,
+      allowNull: false
     },
     valorMovimento: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
+      type: Sequelize.DECIMAL(10, 2),
+      allowNull: false
     },
     vlrMulta: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: true
+      type: Sequelize.DECIMAL(10, 2),
+      allowNull: true
     },
     vlrJuros: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: true
+      type: Sequelize.DECIMAL(10, 2),
+      allowNull: true
     }
-});
+  });
 
-module.exports = MovimentoContasPagar;
+  MovimentoContasPagar.associate = (models) => {
+    MovimentoContasPagar.belongsTo(models.Titulo, {
+      foreignKey: 'tituloId',
+      onDelete: 'CASCADE'
+    });
+  };
+
+  return MovimentoContasPagar;
+};

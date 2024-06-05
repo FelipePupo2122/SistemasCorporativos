@@ -1,40 +1,48 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/config.json');
+const Sequelize = require('sequelize');
 
-const Titulo = sequelize.define('Titulo', {
+module.exports = (sequelize) => {
+  const Titulo = sequelize.define('Titulo', {
     id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
     },
     notaFiscal: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: Sequelize.STRING,
+      allowNull: false
     },
     nParcela: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+      type: Sequelize.INTEGER,
+      allowNull: false
     },
     valorOriginal: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
+      type: Sequelize.DECIMAL(10, 2),
+      allowNull: false
     },
     dtVcto: {
-        type: DataTypes.DATE,
-        allowNull: false
+      type: Sequelize.DATE,
+      allowNull: false
     },
     situacao: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: Sequelize.STRING,
+      allowNull: false
     },
     noNotaFiscal: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: Sequelize.STRING,
+      allowNull: false
     },
     numeroParcelas: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+      type: Sequelize.INTEGER,
+      allowNull: false
     }
-});
+  });
 
-module.exports = Titulo;
+  Titulo.associate = (models) => {
+    Titulo.hasMany(models.MovimentoContasPagar, {
+      foreignKey: 'tituloId',
+      onDelete: 'CASCADE'
+    });
+  };
+
+  return Titulo;
+};

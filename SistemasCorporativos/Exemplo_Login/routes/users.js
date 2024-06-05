@@ -1,14 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const { authenticateToken } = require('../Middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 const db = require('../models');
 const userService = require('../services/userService');
 const bcrypt = require('bcrypt');
-const User = db.User;
 const userController = require('../controllers/userController');
+const User = db.User;
 
 // Crie uma instância do serviço de usuário
 const UserService = new userService(User);
+
+router.get('/', function(req, res, next) {
+    res.send('Modulo de usuarios está rodando.');
+});
 
 // Rota para criar um novo usuário
 router.post('/novoUsuario', async function(req, res, next) {

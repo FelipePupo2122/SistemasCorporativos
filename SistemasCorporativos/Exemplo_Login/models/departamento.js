@@ -1,18 +1,21 @@
-// models/departamento.js
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
-    const Departamento = sequelize.define('Departamento', {
-        codigo: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-        nome: {
-            type: Sequelize.STRING,
-            allowNull: false
-        }
-    });
+  const Departamento = sequelize.define('Departamento', {
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false
+    }
+  });
 
-    return Departamento;
+  Departamento.associate = (models) => {
+    Departamento.hasMany(models.User, { foreignKey: 'departamento', as: 'users' });
+  };
+
+  return Departamento;
 };

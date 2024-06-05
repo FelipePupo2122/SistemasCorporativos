@@ -1,30 +1,37 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/db'); // Importe a instância sequelize do config/db
+const Sequelize = require('sequelize');
 
-const User = sequelize.define('User', {
+module.exports = (sequelize) => {
+  const User = sequelize.define('User', {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
     },
     nome: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
+      type: Sequelize.STRING,
+      allowNull: false
     },
     email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true
     },
     senha: {
-        type: DataTypes.CHAR(60),
-        allowNull: false
+      type: Sequelize.STRING,
+      allowNull: false
     },
     departamento: {
-        type: DataTypes.STRING,
-        allowNull: true
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'Departamentos',
+        key: 'id'
+      }
     }
-});
+  });
 
-module.exports = User;
+  User.associate = (models) => {
+    User.belongsTo(models.Departamento, { foreignKey: 'departamento', as: 'department' });
+  };
+
+  return User;
+};

@@ -1,10 +1,9 @@
 const express = require('express');
-const app = express(); // Cria a instância do express aqui
+const app = express();
 const morgan = require('morgan');
-const cookieParser = require('cookie-parser'); // Importe cookieParser corretamente
-const Sequelize = require('sequelize');
-const config = require('./config/config.json');
-const path = require('path'); // Importe o módulo path
+const cookieParser = require('cookie-parser');
+const path = require('path');
+const bcrypt = require('bcrypt');
 
 // Importe os roteadores
 const indexRouter = require('./routes/index');
@@ -16,15 +15,15 @@ const departamentosRouter = require('./routes/departamentos');
 const fornecedoresRouter = require('./routes/fornecedores');
 const requisicoesRouter = require('./routes/requisicoes');
 const comprasRouter = require('./routes/compras');
-const titulosRouter = require('./routes/titulos'); // Importa a rota de titulos
-const movimentoContasPagarRouter = require('./routes/movimentoContasPagar'); // Importa a rota de movimentoContasPagar
+const titulosRouter = require('./routes/titulos');
+const movimentoContasPagarRouter = require('./routes/movimentoContasPagar');
 
 // Configuração de middleware
-app.use(morgan('dev')); // Use morgan para logging
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser()); // Use cookieParser para lidar com cookies
-app.use(express.static(path.join(__dirname, 'public'))); // Use path para lidar com caminhos de arquivos estáticos
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Definição de rotas
 app.use('/', indexRouter);
@@ -36,13 +35,10 @@ app.use('/departamentos', departamentosRouter);
 app.use('/fornecedores', fornecedoresRouter);
 app.use('/requisicoes', requisicoesRouter);
 app.use('/compras', comprasRouter);
-app.use('/titulos', titulosRouter); // Adiciona a rota de titulos
-app.use('/movimentosContasPagar', movimentoContasPagarRouter); // Adiciona a rota de movimentosContasPagar
+app.use('/titulos', titulosRouter);
+app.use('/movimentosContasPagar', movimentoContasPagarRouter);
 
-const sequelize = new Sequelize(config.development.database, config.development.username, config.development.password, {
-    host: config.development.host,
-    dialect: config.development.dialect
-});
+const { sequelize } = require('./models');
 
 // Função para criptografar a senha antes de criar um novo usuário
 async function hashPassword(req, res, next) {
@@ -63,18 +59,18 @@ async function hashPassword(req, res, next) {
 app.post('/users/novoUsuario', hashPassword);
 
 // Aplicar migrações e sincronizar o banco de dados
-async function ApplyMigrations() {
+async function applyMigrations() {
     try {
-        await db.sequelize.sync({ alter: true });
+        await sequelize.sync({ alter: true });
         console.log('Sincronização com o banco realizada');
     } catch (error) {
         console.log('Erro sincronizando o banco de dados', error);
     }
 }
 
-ApplyMigrations();
+applyMigrations();
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log("Server running on port " + port);
 });
