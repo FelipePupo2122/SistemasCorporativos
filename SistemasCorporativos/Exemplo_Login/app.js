@@ -1,8 +1,12 @@
 const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const app = express(); // Cria a instância do express aqui
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser'); // Importe cookieParser corretamente
+const Sequelize = require('sequelize');
+const config = require('./config/config.json');
+const path = require('path'); // Importe o módulo path
 
+// Importe os roteadores
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const produtosRouter = require('./routes/produtos');
@@ -15,14 +19,14 @@ const comprasRouter = require('./routes/compras');
 const titulosRouter = require('./routes/titulos'); // Importa a rota de titulos
 const movimentoContasPagarRouter = require('./routes/movimentoContasPagar'); // Importa a rota de movimentoContasPagar
 
-const app = express();
-
-app.use(logger('dev'));
+// Configuração de middleware
+app.use(morgan('dev')); // Use morgan para logging
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser()); // Use cookieParser para lidar com cookies
+app.use(express.static(path.join(__dirname, 'public'))); // Use path para lidar com caminhos de arquivos estáticos
 
+// Definição de rotas
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/produtos', produtosRouter);
@@ -35,10 +39,10 @@ app.use('/compras', comprasRouter);
 app.use('/titulos', titulosRouter); // Adiciona a rota de titulos
 app.use('/movimentosContasPagar', movimentoContasPagarRouter); // Adiciona a rota de movimentosContasPagar
 
-module.exports = app;
-
-const bcrypt = require('bcrypt');
-const db = require('./models');
+const sequelize = new Sequelize(config.development.database, config.development.username, config.development.password, {
+    host: config.development.host,
+    dialect: config.development.dialect
+});
 
 // Função para criptografar a senha antes de criar um novo usuário
 async function hashPassword(req, res, next) {
@@ -55,6 +59,7 @@ async function hashPassword(req, res, next) {
     }
 }
 
+// Rota para criar novo usuário
 app.post('/users/novoUsuario', hashPassword);
 
 // Aplicar migrações e sincronizar o banco de dados
@@ -69,7 +74,9 @@ async function ApplyMigrations() {
 
 ApplyMigrations();
 
-const port = '3000';
+const port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log("Server running on port " + port);
 });
+
+module.exports = app;

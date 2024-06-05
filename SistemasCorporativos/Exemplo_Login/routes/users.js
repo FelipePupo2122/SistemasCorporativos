@@ -1,52 +1,41 @@
-// routes/users.js
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const { authenticateToken } = require('../Middleware/auth');
+const db = require('../models');
+const userService = require('../services/userService');
+const bcrypt = require('bcrypt');
+const User = db.User;
+const userController = require('../controllers/userController');
 
-  const { authenticateToken } = require('../Middleware/auth');
-  const db=require('../models');
-  const userService = require('../services/userService');//CLASSE
-  const auth = require('../Middleware/auth');
-  const bcrypt = require('bcrypt'); //bcrypt
-  const User = db.User;
-  const UserService = new userService(User);
-  // const UserService = new userService(db.User);//Contruçõa objeto (antigo)
+// Crie uma instância do serviço de usuário
+const UserService = new userService(User);
 
-  const userController = require('../controllers/userController'); // classe
-  const UserController = new userController(new userService(User));//Construção do objeto
-
-
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('Modulo de usuarios está rodando.');
+// Rota para criar um novo usuário
+router.post('/novoUsuario', async function(req, res, next) {
+    const { nome, email, senha, departamento } = req.body;
+    try {
+        // Hash da senha usando bcrypt
+        const hashedSenha = await bcrypt.hash(senha, 10);
+        
+        // Cria um novo usuário usando o serviço de usuário
+        const novoUser = await UserService.create(nome, email, hashedSenha, departamento);
+        
+        // Retorna o novo usuário criado
+        res.status(200).json(novoUser);
+    } catch (error) {
+        // Em caso de erro, retorna uma mensagem de erro
+        res.status(500).json({ error: 'Erro ao inserir novo usuário.' });
+    }
 });
 
-// rota para criar um novo usuario
-router.post('/novoUsuario', async function(req, res, next){
-  const { nome, email, senha, departamento } = req.body; // Adicione "departamento" aqui
-  try {
-      // Hash da senha usando bcrypt
-      const hashedSenha = await bcrypt.hash(senha, 10); // 10 é o número de rounds de salt
-      const novoUser = await UserService.create(nome, email, hashedSenha, departamento); // Passe "departamento" para o método create
-      res.status(200).json(novoUser);
-  } catch (error) {
-      res.status(500).json({ error: 'Erro ao inserir novo usuário.' });
-  }
-});
-// localiza um usuario especifico
-// router.get('/localizaUsuarioPeloId' , function(req, res, next){
-//   UserController.localizaUsuarioPeloId(req, res);
-// });
-// router.get('/:id', function(req, res, next) {
-//   UserController.findOne(req, res);
-// });
-
-
-router.post('/login', function (req, res, next) {
-  UserController.login(req, res); // Chame o método de login do controlador de usuário
+// Rota para login de usuário
+router.post('/login', function(req, res, next) {
+    userController.login(req, res);
 });
 
-router.get('/localizaTodosUsuario' , authenticateToken, function(req, res, next){
-  UserController.localizaTodosUsuario(req, res);
+// Rota para buscar todos os usuários
+router.get('/localizaTodosUsuario', authenticateToken, function(req, res, next) {
+    userController.localizaTodosUsuario(req, res);
 });
 
 module.exports = router;

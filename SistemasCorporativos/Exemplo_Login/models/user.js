@@ -1,31 +1,30 @@
-const Sequelize = require('sequelize');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db'); // Importe a instância sequelize do config/db
 
-module.exports = (sequelize) => {
-    const User = sequelize.define('User', {
-        id: {
-            type: Sequelize.INTEGER,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        nome: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-        email: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-        senha: {
-            type: Sequelize.CHAR(60),
-            allowNull: false
-        },
-        departamento: {
-            type: Sequelize.STRING, // Adicionando o campo departamento
-            allowNull: true // Permitindo que seja nulo para usuários que ainda não têm departamento definido
-        }
-    });
+const User = sequelize.define('User', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
+    nome: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    senha: {
+        type: DataTypes.CHAR(60),
+        allowNull: false
+    },
+    departamento: {
+        type: DataTypes.STRING,
+        allowNull: true
+    }
+});
 
-    return User;
-};
+module.exports = User;

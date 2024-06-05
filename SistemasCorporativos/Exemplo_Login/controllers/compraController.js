@@ -1,7 +1,3 @@
-// controllers/compraController.js
-
-const CompraService = require('../services/compraService');
-
 class CompraController {
     constructor(compraService) {
         this.compraService = compraService;

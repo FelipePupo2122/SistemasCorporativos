@@ -1,5 +1,3 @@
-// ./controllers/userController.js
-
 class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -29,7 +27,7 @@ class UserController {
         try {
             const allUsers = await this.userService.localizaTodosUsuario();
             res.status(200).json(allUsers);
-        } catch {
+        } catch (error) {
             res.status(400).json({ error: "Erro ao buscar usuários." });
         }
     }

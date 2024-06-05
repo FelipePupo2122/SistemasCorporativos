@@ -1,45 +1,47 @@
-const { DataTypes } = require('sequelize');
-const db = require('../config/db');
+// models/compra.js
+const Sequelize = require('sequelize');
 
-const Compra = db.define('Compra', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    fornecedorId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    cotacaoId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    compradorId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    produtoId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    quantidade: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    custoUnitario: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false
-    },
-    situacao: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 'pendente'
-    },
-    numeroParcelas: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    }
-});
+module.exports = (sequelize) => {
+    const Compra = sequelize.define('Compra', {
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        fornecedorId: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
+        cotacaoId: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
+        compradorId: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
+        produtoId: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
+        quantidade: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
+        custoUnitario: {
+            type: Sequelize.DECIMAL(10, 2),
+            allowNull: false
+        },
+        situacao: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            defaultValue: 'pendente'
+        },
+        numeroParcelas: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        }
+    });
 
-module.exports = Compra;
+    return Compra;
+};

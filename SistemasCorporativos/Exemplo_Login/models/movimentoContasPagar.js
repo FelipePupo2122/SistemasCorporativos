@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
-const db = require('../config/db');
+const { sequelize } = require('../config/config.json');
 
-const MovimentoContasPagar = db.define('MovimentoContasPagar', {
+const MovimentoContasPagar = sequelize.define('MovimentoContasPagar', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

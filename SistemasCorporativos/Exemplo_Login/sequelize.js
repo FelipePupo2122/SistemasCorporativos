@@ -1,18 +1,16 @@
-// sequelize.js
-
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize('database', 'username', 'password', {
-  host: 'localhost',
-  dialect: 'mysql'
+const config = require('../config/config.json');
+
+const sequelize = new Sequelize(config.development.database, config.development.username, config.development.password, {
+  host: config.development.host,
+  dialect: config.development.dialect
 });
 
-// Definir modelos
 const Fornecedor = require('./models/fornecedor')(sequelize);
 const Titulo = require('./models/titulo')(sequelize);
 const MovimentoContasPagar = require('./models/movimentoContasPagar')(sequelize);
 // Adicione aqui a importação dos outros modelos
 
-// Sincronizar modelos com o banco de dados
 sequelize.sync({ force: true }).then(() => {
     console.log('Tabelas sincronizadas com sucesso.');
 }).catch((error) => {
