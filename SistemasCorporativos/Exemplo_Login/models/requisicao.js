@@ -1,3 +1,5 @@
+// models/requisicao.js
+
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
@@ -36,6 +38,13 @@ module.exports = (sequelize) => {
             defaultValue: 'Pendente'
         }
     });
+    
+    Requisicao.associate = (models) => {
+        // Definindo relacionamentos
+        Requisicao.belongsTo(models.User, { foreignKey: 'usuarioId' });
+        Requisicao.belongsTo(models.Produto, { foreignKey: 'produtoId' });
+        Requisicao.belongsTo(models.CentroCusto, { foreignKey: 'centroCustoId' });
+    };
 
     return Requisicao;
 };

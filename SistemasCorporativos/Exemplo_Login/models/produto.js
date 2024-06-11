@@ -1,3 +1,5 @@
+// models/produto.js
+
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
@@ -17,10 +19,10 @@ module.exports = (sequelize) => {
     });
 
     Produto.associate = (models) => {
-        Produto.hasMany(models.Movimento, {
-            foreignKey: 'produtoId',
-            onDelete: 'CASCADE'
-        });
+        // Definindo relacionamentos
+        Produto.hasMany(models.Movimento, { foreignKey: 'produtoId', onDelete: 'CASCADE' });
+        Produto.hasMany(models.Cotacao, { foreignKey: 'produtoId' });
+        Produto.hasMany(models.Requisicao, { foreignKey: 'produtoId' });
     };
 
     return Produto;

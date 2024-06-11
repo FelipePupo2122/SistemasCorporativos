@@ -1,5 +1,3 @@
-// routes/depositos.js
-
 const express = require('express');
 const router = express.Router();
 
@@ -10,11 +8,11 @@ const Deposito = db.Deposito;
 const depositoService = new DepositoService(Deposito);
 const depositoController = new DepositoController(depositoService);
 
-router.post('/novoDeposito', function(req, res, next) {
+router.post('/novoDeposito', (req, res) => {
     depositoController.novoDeposito(req, res);
 });
 
-router.get('/listarDepositos', function(req, res, next) {
+router.get('/listarDepositos', (req, res) => {
     depositoController.listarDepositos(req, res);
 });
 

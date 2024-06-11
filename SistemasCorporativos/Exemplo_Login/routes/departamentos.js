@@ -1,4 +1,3 @@
-// routes/departamentos.js
 const express = require('express');
 const router = express.Router();
 
@@ -9,23 +8,23 @@ const Departamento = db.Departamento;
 const departamentoService = new DepartamentoService(Departamento);
 const departamentoController = new DepartamentoController(departamentoService);
 
-router.post('/', function(req, res, next) {
+router.post('/', (req, res) => {
     departamentoController.criarDepartamento(req, res);
 });
 
-router.get('/', function(req, res, next) {
+router.get('/', (req, res) => {
     departamentoController.listarDepartamentos(req, res);
 });
 
-router.get('/:id', function(req, res, next) {
+router.get('/:id', (req, res) => {
     departamentoController.buscarDepartamentoPorId(req, res);
 });
 
-router.put('/:id', function(req, res, next) {
+router.put('/:id', (req, res) => {
     departamentoController.atualizarDepartamento(req, res);
 });
 
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', (req, res) => {
     departamentoController.deletarDepartamento(req, res);
 });
 

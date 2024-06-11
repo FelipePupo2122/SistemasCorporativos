@@ -7,15 +7,20 @@ module.exports = (sequelize) => {
       primaryKey: true,
       autoIncrement: true
     },
-    name: {
+    codigo: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    nome: {
       type: Sequelize.STRING,
       allowNull: false
     }
   });
 
   Departamento.associate = (models) => {
+    // Definindo relacionamentos
     Departamento.hasMany(models.User, { foreignKey: 'departamento', as: 'users' });
-  };
+};
 
-  return Departamento;
+return Departamento;
 };

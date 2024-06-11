@@ -28,9 +28,12 @@ class MovimentoContasPagarController {
         const { id } = req.params;
         try {
             const movimento = await this.movimentoContasPagarService.buscarMovimento(id);
+            if (!movimento) {
+                return res.status(404).json({ error: 'Movimento não encontrado.' });
+            }
             return res.status(200).json(movimento);
         } catch (error) {
-            return res.status(404).json({ error: 'Movimento não encontrado.' });
+            return res.status(500).json({ error: 'Erro ao buscar movimento.' });
         }
     }
 

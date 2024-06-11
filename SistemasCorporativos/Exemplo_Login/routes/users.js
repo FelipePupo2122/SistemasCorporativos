@@ -1,14 +1,17 @@
+// routes/users.js
+
 const express = require('express');
 const router = express.Router();
 const { authenticateToken } = require('../middleware/auth');
 const db = require('../models');
-const userService = require('../services/userService');
+const UserService = require('../services/userService');
 const bcrypt = require('bcrypt');
-const userController = require('../controllers/userController');
+const UserController = require('../controllers/userController');
 const User = db.User;
 
 // Crie uma instância do serviço de usuário
-const UserService = new userService(User);
+const userService = new UserService(User);
+const userController = new UserController(userService);
 
 router.get('/', function(req, res, next) {
     res.send('Modulo de usuarios está rodando.');
@@ -22,7 +25,7 @@ router.post('/novoUsuario', async function(req, res, next) {
         const hashedSenha = await bcrypt.hash(senha, 10);
         
         // Cria um novo usuário usando o serviço de usuário
-        const novoUser = await UserService.create(nome, email, hashedSenha, departamento);
+        const novoUser = await userService.create(nome, email, hashedSenha, departamento);
         
         // Retorna o novo usuário criado
         res.status(200).json(novoUser);
@@ -33,13 +36,9 @@ router.post('/novoUsuario', async function(req, res, next) {
 });
 
 // Rota para login de usuário
-router.post('/login', function(req, res, next) {
-    userController.login(req, res);
-});
+router.post('/login', (req, res) => userController.login(req, res));
 
 // Rota para buscar todos os usuários
-router.get('/localizaTodosUsuario', authenticateToken, function(req, res, next) {
-    userController.localizaTodosUsuario(req, res);
-});
+router.get('/localizaTodosUsuario', authenticateToken, (req, res) => userController.localizaTodosUsuario(req, res));
 
 module.exports = router;

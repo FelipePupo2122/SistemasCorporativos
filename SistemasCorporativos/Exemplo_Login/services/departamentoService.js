@@ -1,4 +1,3 @@
-// services/departamentoService.js
 class DepartamentoService {
     constructor(departamentoModel) {
         this.Departamento = departamentoModel;

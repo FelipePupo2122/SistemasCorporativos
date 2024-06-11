@@ -1,4 +1,3 @@
-// services/movimentoService.js
 class MovimentoService {
     constructor(movimentoModel, produtoModel) {
         this.Movimento = movimentoModel;

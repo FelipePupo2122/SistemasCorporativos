@@ -1,4 +1,7 @@
-class userService {
+const bcrypt = require('bcrypt');
+const { generateToken } = require('../utils/token');
+
+class UserService {
     constructor(userModel) {
         this.User = userModel;
     }
@@ -7,12 +10,12 @@ class userService {
         try {
             const hashedSenha = await bcrypt.hash(senha, 10);
             const novoUser = await this.User.create({
-                nome: nome,
-                email: email,
+                nome,
+                email,
                 senha: hashedSenha,
-                departamento: departamento
+                departamento
             });
-            return novoUser ? novoUser : null;
+            return novoUser || null;
         } catch (error) {
             throw error;
         }
@@ -20,8 +23,8 @@ class userService {
 
     async localizaTodosUsuario() {
         try {
-            const AllUsers = await this.User.findAll();
-            return AllUsers ? AllUsers : null;
+            const allUsers = await this.User.findAll();
+            return allUsers || null;
         } catch (error) {
             throw error;
         }
@@ -30,7 +33,7 @@ class userService {
     async findOne(id) {
         try {
             const user = await this.User.findByPk(id);
-            return user ? user : null;
+            return user || null;
         } catch (error) {
             throw error;
         }
@@ -46,7 +49,7 @@ class userService {
             if (!senhaCorreta) {
                 throw new Error('Credenciais inválidas.');
             }
-            const token = generateToken(user.id);
+            const token = generateToken({ userId: user.id });
             return token;
         } catch (error) {
             throw error;
@@ -54,4 +57,4 @@ class userService {
     }
 }
 
-module.exports = userService;
+module.exports = UserService;

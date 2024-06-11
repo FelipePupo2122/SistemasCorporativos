@@ -1,4 +1,3 @@
-// controllers/departamentoController.js
 class DepartamentoController {
     constructor(departamentoService) {
         this.departamentoService = departamentoService;

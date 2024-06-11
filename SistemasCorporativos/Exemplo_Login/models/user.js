@@ -1,3 +1,4 @@
+// models/User.js
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
@@ -31,6 +32,9 @@ module.exports = (sequelize) => {
 
   User.associate = (models) => {
     User.belongsTo(models.Departamento, { foreignKey: 'departamento', as: 'department' });
+    User.hasMany(models.Requisicao, { foreignKey: 'usuarioId' });
+    User.hasMany(models.Cotacao, { foreignKey: 'compradorId' });
+    User.hasMany(models.Compra, { foreignKey: 'compradorId' });
   };
 
   return User;

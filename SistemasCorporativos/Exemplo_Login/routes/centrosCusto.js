@@ -9,27 +9,27 @@ const centroCustoService = new CentroCustoService(db.CentroCusto);
 const centroCustoController = new CentroCustoController(centroCustoService);
 
 // Rota para criar um novo Centro de Custo
-router.post('/novoCentroCusto', function(req, res, next) {
+router.post('/novoCentroCusto', (req, res) => {
     centroCustoController.criarCentroCusto(req, res);
 });
 
 // Rota para listar todos os Centros de Custo
-router.get('/listarCentrosCusto', function(req, res, next) {
+router.get('/listarCentrosCusto', (req, res) => {
     centroCustoController.listarCentrosCusto(req, res);
 });
 
 // Rota para buscar um Centro de Custo por ID
-router.get('/buscarCentroCusto/:id', function(req, res, next) {
+router.get('/buscarCentroCusto/:id', (req, res) => {
     centroCustoController.buscarCentroCusto(req, res);
 });
 
 // Rota para atualizar um Centro de Custo por ID
-router.put('/atualizarCentroCusto/:id', function(req, res, next) {
+router.put('/atualizarCentroCusto/:id', (req, res) => {
     centroCustoController.atualizarCentroCusto(req, res);
 });
 
-// Rota para excluir um Centro de Custo por ID
-router.delete('/excluirCentroCusto/:id', function(req, res, next) {
+
+router.delete('/excluirCentroCusto/:id', (req, res) => {
     centroCustoController.excluirCentroCusto(req, res);
 });
 

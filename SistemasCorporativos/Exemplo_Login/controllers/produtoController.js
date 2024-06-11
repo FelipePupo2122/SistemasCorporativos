@@ -1,4 +1,5 @@
 // controllers/produtoController.js
+
 class ProdutoController {
     constructor(produtoService) {
         this.produtoService = produtoService;
@@ -8,7 +9,7 @@ class ProdutoController {
         const { nome, descricao, depositoId } = req.body;
         try {
             const novoProduto = await this.produtoService.criarProduto(nome, descricao, depositoId);
-            res.status(200).json(novoProduto);
+            res.status(201).json(novoProduto); // Alterado status para 201 (Criado)
         } catch (error) {
             res.status(500).json({ error: 'Erro ao criar novo produto.' });
         }

@@ -40,5 +40,12 @@ module.exports = (sequelize) => {
         }
     });
 
+    Cotacao.associate = (models) => {
+        // Definindo relacionamentos
+        Cotacao.belongsTo(models.Produto, { foreignKey: 'produtoId' });
+        Cotacao.belongsTo(models.Fornecedor, { foreignKey: 'fornecedorId' });
+        Cotacao.belongsTo(models.User, { foreignKey: 'compradorId' });
+    };
+
     return Cotacao;
 };

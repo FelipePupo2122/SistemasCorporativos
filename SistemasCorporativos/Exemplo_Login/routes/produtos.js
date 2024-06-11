@@ -1,3 +1,5 @@
+// routes/produtos.js
+
 const express = require('express');
 const router = express.Router();
 
@@ -8,12 +10,8 @@ const Produto = db.Produto;
 const produtoService = new ProdutoService(Produto);
 const produtoController = new ProdutoController(produtoService);
 
-router.post('/novoProduto', function(req, res, next) {
-    produtoController.novoProduto(req, res);
-});
+router.post('/novoProduto', (req, res) => produtoController.novoProduto(req, res));
 
-router.get('/listarProdutos', function(req, res, next) {
-    produtoController.listarProdutos(req, res);
-});
+router.get('/listarProdutos', (req, res) => produtoController.listarProdutos(req, res));
 
 module.exports = router;

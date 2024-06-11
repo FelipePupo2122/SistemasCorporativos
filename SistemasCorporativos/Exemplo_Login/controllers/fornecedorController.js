@@ -1,3 +1,4 @@
+// controllers/fornecedorController.js
 class FornecedorController {
     constructor(fornecedorService) {
         this.fornecedorService = fornecedorService;

@@ -30,10 +30,8 @@ module.exports = (sequelize) => {
     });
 
     Movimento.associate = (models) => {
-        Movimento.belongsTo(models.Produto, {
-            foreignKey: 'produtoId',
-            onDelete: 'CASCADE'
-        });
+        // Definindo relacionamentos
+        Movimento.belongsTo(models.Produto, { foreignKey: 'produtoId', onDelete: 'CASCADE' });
     };
 
     return Movimento;

@@ -23,7 +23,8 @@ class MovimentoContasPagarService {
 
     async buscarMovimento(id) {
         try {
-            return await this.MovimentoContasPagar.findByPk(id);
+            const movimento = await this.MovimentoContasPagar.findByPk(id);
+            return movimento ? movimento : null;
         } catch (error) {
             throw error;
         }

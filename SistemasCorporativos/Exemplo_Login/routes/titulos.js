@@ -3,10 +3,10 @@
 const express = require('express');
 const router = express.Router();
 const TituloService = require('../services/tituloService');
-const MovimentoContasPagarService = require('../services/movimentoContasPagarService');
 const TituloController = require('../controllers/tituloController');
 const db = require('../models');
 
+// Inicializar o serviço e o controlador
 const tituloService = new TituloService(db.Titulo, db.MovimentoContasPagar);
 const tituloController = new TituloController(tituloService);
 

@@ -1,13 +1,7 @@
-// models/compra.js
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
     const Compra = sequelize.define('Compra', {
-        id: {
-            type: Sequelize.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
         fornecedorId: {
             type: Sequelize.INTEGER,
             allowNull: false
@@ -42,6 +36,14 @@ module.exports = (sequelize) => {
             allowNull: false
         }
     });
+
+    Compra.associate = (models) => {
+        // Definindo relacionamentos
+        Compra.belongsTo(models.Fornecedor, { foreignKey: 'fornecedorId' });
+        Compra.belongsTo(models.Cotacao, { foreignKey: 'cotacaoId' });
+        Compra.belongsTo(models.User, { foreignKey: 'compradorId' });
+        Compra.belongsTo(models.Produto, { foreignKey: 'produtoId' });
+    };
 
     return Compra;
 };

@@ -5,10 +5,7 @@ class CentroCustoService {
 
     async criarCentroCusto(codigo, nome) {
         try {
-            const novoCentroCusto = await this.CentroCusto.create({
-                codigo,
-                nome
-            });
+            const novoCentroCusto = await this.CentroCusto.create({ codigo, nome });
             return novoCentroCusto;
         } catch (error) {
             throw error;
@@ -48,9 +45,7 @@ class CentroCustoService {
 
     async excluirCentroCusto(id) {
         try {
-            await this.CentroCusto.destroy({
-                where: { id }
-            });
+            await this.CentroCusto.destroy({ where: { id } });
         } catch (error) {
             throw error;
         }

@@ -1,3 +1,5 @@
+// controllers/userController.js
+
 class UserController {
     constructor(userService) {
         this.userService = userService;

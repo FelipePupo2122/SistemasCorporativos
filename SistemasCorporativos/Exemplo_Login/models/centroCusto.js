@@ -1,3 +1,4 @@
+// models/CentroCusto.js
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {

@@ -1,3 +1,4 @@
+// services/fornecedorService.js
 class FornecedorService {
     constructor(fornecedorModel) {
         this.Fornecedor = fornecedorModel;
@@ -6,10 +7,10 @@ class FornecedorService {
     async criarFornecedor(nome, localidade, cnpj, responsavel) {
         try {
             const novoFornecedor = await this.Fornecedor.create({
-                nome: nome,
-                localidade: localidade,
-                cnpj: cnpj,
-                responsavel: responsavel
+                nome,
+                localidade,
+                cnpj,
+                responsavel
             });
             return novoFornecedor;
         } catch (error) {
@@ -39,7 +40,7 @@ class FornecedorService {
     async atualizarFornecedor(id, dadosAtualizados) {
         try {
             const [linhasAfetadas, [fornecedorAtualizado]] = await this.Fornecedor.update(dadosAtualizados, {
-                where: { id: id },
+                where: { id },
                 returning: true // Retorna o registro atualizado
             });
             return fornecedorAtualizado;
@@ -51,7 +52,7 @@ class FornecedorService {
     async excluirFornecedor(id) {
         try {
             await this.Fornecedor.destroy({
-                where: { id: id }
+                where: { id }
             });
         } catch (error) {
             throw error;

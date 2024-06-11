@@ -16,19 +16,19 @@ class CompraController {
     async listarCompras(req, res) {
         try {
             const compras = await this.compraService.listarCompras();
-            res.status(200).json(compras);
+            return res.status(200).json(compras);
         } catch (error) {
-            res.status(500).json({ error: 'Erro ao listar compras.' });
+            return res.status(500).json({ error: 'Erro ao listar compras.' });
         }
     }
 
-    async atualizarCompra(req, res) {
+    async editarCompra(req, res) {
         const { id } = req.params;
         try {
             const compraAtualizada = await this.compraService.atualizarCompra(id, req.body);
-            res.status(200).json(compraAtualizada);
+            return res.status(200).json(compraAtualizada);
         } catch (error) {
-            res.status(500).json({ error: 'Erro ao atualizar compra.' });
+            return res.status(500).json({ error: 'Erro ao atualizar compra.' });
         }
     }
 
@@ -36,9 +36,9 @@ class CompraController {
         const { id } = req.params;
         try {
             await this.compraService.excluirCompra(id);
-            res.status(204).end();
+            return res.status(204).end();
         } catch (error) {
-            res.status(500).json({ error: 'Erro ao excluir compra.' });
+            return res.status(500).json({ error: 'Erro ao excluir compra.' });
         }
     }
 }
