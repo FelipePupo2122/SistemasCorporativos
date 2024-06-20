@@ -1,5 +1,3 @@
-// services/produtoService.js
-
 class ProdutoService {
     constructor(produtoModel) {
         this.Produto = produtoModel;

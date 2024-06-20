@@ -1,44 +1,49 @@
-// routes/users.js
-
 const express = require('express');
 const router = express.Router();
-const { authenticateToken } = require('../middleware/auth');
-const db = require('../models');
 const UserService = require('../services/userService');
-const bcrypt = require('bcrypt');
-const UserController = require('../controllers/userController');
-const User = db.User;
+const { User } = require('../models');
+const authMiddleware = require('../middlewares/auth');
 
-// Crie uma instância do serviço de usuário
 const userService = new UserService(User);
-const userController = new UserController(userService);
 
-router.get('/', function(req, res, next) {
-    res.send('Modulo de usuarios está rodando.');
-});
-
-// Rota para criar um novo usuário
-router.post('/novoUsuario', async function(req, res, next) {
+// Rotas sem autenticação
+router.post('/register', async (req, res) => {
     const { nome, email, senha, departamento } = req.body;
     try {
-        // Hash da senha usando bcrypt
-        const hashedSenha = await bcrypt.hash(senha, 10);
-        
-        // Cria um novo usuário usando o serviço de usuário
-        const novoUser = await userService.create(nome, email, hashedSenha, departamento);
-        
-        // Retorna o novo usuário criado
-        res.status(200).json(novoUser);
+        const { user, token } = await userService.create(nome, email, senha, departamento);
+        res.status(201).json({ user, token });
     } catch (error) {
-        // Em caso de erro, retorna uma mensagem de erro
-        res.status(500).json({ error: 'Erro ao inserir novo usuário.' });
+        res.status(400).json({ error: error.message });
     }
 });
 
-// Rota para login de usuário
-router.post('/login', (req, res) => userController.login(req, res));
+router.post('/login', async (req, res) => {
+    const { token } = req.body;
+    try {
+        const user = await userService.login(token);
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(401).json({ error: error.message });
+    }
+});
 
-// Rota para buscar todos os usuários
-router.get('/localizaTodosUsuario', authenticateToken, (req, res) => userController.localizaTodosUsuario(req, res));
+// Rotas autenticadas
+router.get('/', authMiddleware, async (req, res) => {
+    try {
+        const users = await userService.localizaTodosUsuario();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+router.get('/:id', authMiddleware, async (req, res) => {
+    try {
+        const user = await userService.findOne(req.params.id);
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+});
 
 module.exports = router;

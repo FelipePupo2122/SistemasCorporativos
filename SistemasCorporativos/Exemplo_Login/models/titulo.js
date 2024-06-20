@@ -1,5 +1,3 @@
-// models/titulo.js
-
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {

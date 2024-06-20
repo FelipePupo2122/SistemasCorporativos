@@ -1,5 +1,3 @@
-// services/compraService.js
-
 const Compra = require('../models/compra');
 
 class CompraService {

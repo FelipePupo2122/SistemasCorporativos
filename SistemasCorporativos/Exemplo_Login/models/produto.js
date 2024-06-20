@@ -1,5 +1,3 @@
-// models/produto.js
-
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {

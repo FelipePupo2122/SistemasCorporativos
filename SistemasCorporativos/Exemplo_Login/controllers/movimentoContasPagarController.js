@@ -1,5 +1,3 @@
-// controllers/movimentoContasPagarController.js
-
 class MovimentoContasPagarController {
     constructor(movimentoContasPagarService) {
         this.movimentoContasPagarService = movimentoContasPagarService;

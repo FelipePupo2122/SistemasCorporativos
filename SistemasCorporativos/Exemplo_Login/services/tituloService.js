@@ -1,5 +1,3 @@
-// services/tituloService.js
-
 class TituloService {
     constructor(tituloModel, movimentoContasPagarModel) {
         this.Titulo = tituloModel;

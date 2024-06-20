@@ -1,4 +1,3 @@
-// services/fornecedorService.js
 class FornecedorService {
     constructor(fornecedorModel) {
         this.Fornecedor = fornecedorModel;

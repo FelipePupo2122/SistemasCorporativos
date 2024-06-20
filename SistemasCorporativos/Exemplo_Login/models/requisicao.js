@@ -1,5 +1,3 @@
-// models/requisicao.js
-
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {

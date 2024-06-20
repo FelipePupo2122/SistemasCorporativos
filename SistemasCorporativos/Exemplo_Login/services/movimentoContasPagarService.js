@@ -1,5 +1,3 @@
-// services/movimentoContasPagarService.js
-
 class MovimentoContasPagarService {
     constructor(movimentoContasPagarModel) {
         this.MovimentoContasPagar = movimentoContasPagarModel;

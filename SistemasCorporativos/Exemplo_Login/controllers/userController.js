@@ -1,5 +1,3 @@
-// controllers/userController.js
-
 class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -8,18 +6,18 @@ class UserController {
     async create(req, res) {
         const { nome, email, senha, departamento } = req.body;
         try {
-            const novoUser = await this.userService.create(nome, email, senha, departamento);
-            res.status(200).json(novoUser);
+            const { user, token } = await this.userService.create(nome, email, senha, departamento);
+            res.status(200).json({ user, token });
         } catch (error) {
             res.status(500).json({ error: 'Erro ao inserir novo usuário.' });
         }
     }
 
     async login(req, res) {
-        const { id, senha } = req.body;
+        const { email, senha } = req.body;
         try {
-            const token = await this.userService.login(id, senha);
-            res.status(200).json({ token });
+            const { user, token } = await this.userService.login(email, senha);
+            res.status(200).json({ user, token });
         } catch (error) {
             res.status(401).json({ error: error.message });
         }

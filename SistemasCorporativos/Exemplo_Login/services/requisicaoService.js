@@ -1,5 +1,3 @@
-// services/requisicaoService.js
-
 class RequisicaoService {
     constructor(requisicaoModel) {
         this.Requisicao = requisicaoModel;

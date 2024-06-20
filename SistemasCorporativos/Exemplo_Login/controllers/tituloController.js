@@ -1,5 +1,3 @@
-// controllers/tituloController.js
-
 class TituloController {
     constructor(tituloService) {
         this.tituloService = tituloService;

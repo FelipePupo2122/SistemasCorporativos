@@ -3,7 +3,6 @@ const app = express();
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const bcrypt = require('bcrypt');
 const db = require('./models'); // Importe o arquivo do Sequelize atualizado
 
 // Importe os roteadores
@@ -20,6 +19,10 @@ const titulosRouter = require('./routes/titulos');
 const movimentoContasPagarRouter = require('./routes/movimentoContasPagar');
 const centroCustoRouter = require('./routes/centrosCusto');
 const cotacoesRouter = require('./routes/cotacoes');
+const titulosReceberRouter = require('./routes/titulosReceber'); // Importe o roteador de Títulos de Contas a Receber
+const registroVendasRouter = require('./routes/registroVendas'); // Importe o roteador de Registro de Vendas
+const detalhesVendaRouter = require('./routes/detalhesVenda'); // Importe o roteador de Detalhes de Venda
+const clientesRouter = require('./routes/clientes'); // Importe o roteador de Clientes
 
 // Configuração de middleware
 app.use(morgan('dev'));
@@ -27,21 +30,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// Função para criptografar a senha antes de criar um novo usuário
-async function hashPassword(req, res, next) {
-    if (req.body.senha) {
-        try {
-            const hashedSenha = await bcrypt.hash(req.body.senha, 10);
-            req.body.senha = hashedSenha;
-            next();
-        } catch (error) {
-            return res.status(500).json({ error: 'Erro ao criptografar a senha.' });
-        }
-    } else {
-        next();
-    }
-}
 
 // Definição de rotas
 app.use('/', indexRouter);
@@ -57,6 +45,16 @@ app.use('/titulos', titulosRouter);
 app.use('/movimentosContasPagar', movimentoContasPagarRouter);
 app.use('/centroCusto', centroCustoRouter);
 app.use('/cotacoes', cotacoesRouter);
+app.use('/titulosReceber', titulosReceberRouter); // Adicione o roteador de Títulos de Contas a Receber
+app.use('/registroVendas', registroVendasRouter); // Adicione o roteador de Registro de Vendas
+app.use('/detalhesVenda', detalhesVendaRouter); // Use o roteador de Detalhes de Venda
+app.use('/clientes', clientesRouter); // Use o roteador de Clientes
+
+// Middleware para tratamento de erros
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+});
 
 // Sincronização do banco de dados com os modelos do Sequelize
 db.sequelize.sync({ alter: true })
